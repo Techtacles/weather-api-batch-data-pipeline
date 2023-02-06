@@ -32,8 +32,8 @@ def get_values(response):
 
 #Get the s3 client using Boto3's client api
 def get_s3_client():
-    s3=boto3.client('s3',aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
-    aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'),region_name='us-east-1')
+    s3=boto3.client('s3',aws_access_key_id=os.environ.get('ACCESS_KEY'),
+    aws_secret_access_key=os.environ.get('SECRET_KEY'),region_name='us-east-1')
     return s3
 
 #Upload files to s3
