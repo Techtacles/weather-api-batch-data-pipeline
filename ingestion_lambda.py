@@ -28,7 +28,7 @@ def get_values(response):
     'condition':event['current']['condition']['text'],'wind_mph':event['current']['wind_mph'],
     'wind_dir':event['current']['wind_dir'],'humidity':event['current']['humidity'],'cloud':event['current']['cloud'],
     'pressure_mb':event['current']['pressure_mb'],'precip_mm':event['current']['precip_mm']}
-    return str(push_event)
+    return bytes(json.dumps(push_event).encode('utf8'))
 
 #Get the s3 client using Boto3's client api
 def get_s3_client():
@@ -38,12 +38,12 @@ def get_s3_client():
 
 #Upload files to s3
 def upload_to_s3(client):
-    response=client.put_object(Body=get_values(get_response()),Bucket='weather-api-raw-s3',Key=get_current_datetime())
+    response=client.put_object(Body=get_values(get_response()),Bucket='weather-api-raw-s3',Key=f'{get_current_datetime()}.json')
 
 #Run the ingestion pipeline
 def main():
     upload_to_s3(get_s3_client())
-    return f'Successfully uploaded {get_values(get_response())}'
+    return f'Successfully uploaded {str(get_values(get_response()))}'
 
 def lambda_handler(event, context):
     # TODO implement
